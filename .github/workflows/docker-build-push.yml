@@ -36,8 +36,11 @@ jobs:
           sed -i "s|image: .*|image: docker.io/andriifedotov/cats-gazing:${GITHUB_SHA}|g" infra/app/deployment.yaml
 
       - name: Commit changes to infra repo
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Update cats-gazing image to ${{ github.sha }}"
-          file_pattern: "app/deployment.yaml"
-          cwd: infra
+        run: |
+          cd infra
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add app/deployment.yaml
+          git commit -m "Update cats-gazing image to $GITHUB_SHA" || echo "Nothing to commit"
+          git push
+
