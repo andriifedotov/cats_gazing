@@ -24,9 +24,20 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/cats-gazing:${{ github.sha }}
 
-      - name: Update infra repo with new image tag
-        uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Clone infra repo
+        uses: actions/checkout@v3
         with:
           repository: andriifedotov/cats_gazing_infra
-          file_pattern: "apps/cats-gazing/deployment.yaml"
+          path: infra
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Deployment image
+        run: |
+          sed -i "s|image: .*|image: docker.io/andriifedotov/cats-gazing:${GITHUB_SHA}|g" infra/app/deployment.yaml
+
+      - name: Commit changes to infra repo
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
           commit_message: "Update cats-gazing image to ${{ github.sha }}"
+          file_pattern: "app/deployment.yaml"
+          cwd: infra
