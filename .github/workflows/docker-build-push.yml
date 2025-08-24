@@ -29,13 +29,13 @@ jobs:
         with:
           repository: andriifedotov/cats_gazing_infra
           path: infra
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.INFRA_PAT }}
 
       - name: Update Deployment image
         run: |
           sed -i "s|image: .*|image: docker.io/andriifedotov/cats-gazing:${GITHUB_SHA}|g" infra/app/deployment.yaml
 
-      - name: Commit changes to infra repo
+      - name: Commit and push changes
         run: |
           cd infra
           git config user.name "github-actions"
@@ -43,4 +43,5 @@ jobs:
           git add app/deployment.yaml
           git commit -m "Update cats-gazing image to $GITHUB_SHA" || echo "Nothing to commit"
           git push
+
 
