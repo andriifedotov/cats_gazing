@@ -2,24 +2,24 @@
 {% block title %}Cats Gazing 🐱{% endblock %}
 
 {% block content %}
-  <h1>Cats Gazing 🐱</h1>
-  <p class="subtitle">A tiny CI/CD demo app</p>
+<h1>Cats Gazing 🐱</h1>
+<p class="subtitle">A tiny CI/CD demo app</p>
 
-  <div id="image-wrap" class="image-wrap">
-    <img id="cat-img" alt="Random cat" />
-  </div>
+<div id="image-wrap" class="image-wrap">
+  <img id="cat-img" alt="Random cat" />
+</div>
 
-  <div class="controls">
-    <button id="btn-new">New cat</button>
-    <label class="auto">
-      <input type="checkbox" id="auto-refresh">
-      Auto-refresh (every 10s)
-    </label>
-  </div>
+<div class="controls">
+  <button id="btn-new">New cat</button>
+  <label class="auto">
+    <input type="checkbox" id="auto-refresh">
+    Auto-refresh (every 10s)
+  </label>
+</div>
 
-  <footer>
-    <span id="status">Loading…</span>
-  </footer>
+<footer>
+  <span id="status">Loading…</span>
+</footer>
 
-  <script src="/static/app.js"></script>
+<script src="/static/app.js"></script>
 {% endblock %}
