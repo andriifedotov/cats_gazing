@@ -5,8 +5,10 @@ from flask import Flask, jsonify, render_template, redirect, url_for
 from flask_login import LoginManager, login_required, current_user
 from models import db, User
 from auth import bp as auth_bp
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 app.secret_key = os.getenv("SECRET_KEY", "dev-secret")  # should be set securely in prod
 
 # Database config
