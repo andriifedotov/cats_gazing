@@ -1,14 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 from models import db, User
 
-# Prefix all auth routes
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 # --- LOGIN ---
 @bp.get("/login", endpoint="login")
 def login_get():
-    return render_template("login.html")
+    next_url = request.args.get("next")  # capture the redirect target
+    return render_template("login.html", next=next_url)
 
 @bp.post("/login")
 def login_post():
@@ -18,11 +18,12 @@ def login_post():
 
     if not user or not user.verify_password(password):
         flash("Invalid credentials", "error")
-        return redirect(url_for("auth.login"))
+        next_url = request.form.get("next") or url_for("index")
+        return redirect(url_for("auth.login", next=next_url))
 
     login_user(user, remember=True)
-    # Redirect to 'next' if provided, otherwise go to index
-    next_url = request.args.get("next") or url_for("index")
+    # redirect to 'next' if present, otherwise index
+    next_url = request.form.get("next") or url_for("index")
     return redirect(next_url)
 
 # --- REGISTER ---
