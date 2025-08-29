@@ -2,10 +2,11 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, login_required, logout_user
 from models import db, User
 
-# Add a prefix for all auth routes to avoid conflicts
+# Prefix all auth routes
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
-@bp.get("/login")
+# --- LOGIN ---
+@bp.get("/login", endpoint="login")
 def login_get():
     return render_template("login.html")
 
@@ -14,14 +15,18 @@ def login_post():
     email = request.form.get("email", "").strip().lower()
     password = request.form.get("password", "")
     user = User.query.filter_by(email=email).first()
+
     if not user or not user.verify_password(password):
         flash("Invalid credentials", "error")
-        return redirect(url_for("auth.login_get"))
+        return redirect(url_for("auth.login"))
+
     login_user(user, remember=True)
-    next_url = request.args.get("next") or url_for("protected")
+    # Redirect to 'next' if provided, otherwise go to index
+    next_url = request.args.get("next") or url_for("index")
     return redirect(next_url)
 
-@bp.get("/register")
+# --- REGISTER ---
+@bp.get("/register", endpoint="register")
 def register_get():
     return render_template("register.html")
 
@@ -29,21 +34,24 @@ def register_get():
 def register_post():
     email = request.form.get("email", "").strip().lower()
     password = request.form.get("password", "")
+
     if not email or not password:
         flash("Email and password are required", "error")
-        return redirect(url_for("auth.register_get"))
-    exists = User.query.filter_by(email=email).first()
-    if exists:
+        return redirect(url_for("auth.register"))
+
+    if User.query.filter_by(email=email).first():
         flash("Email already registered", "error")
-        return redirect(url_for("auth.register_get"))
+        return redirect(url_for("auth.register"))
+
     user = User(email=email, password_hash=User.hash_password(password))
     db.session.add(user)
     db.session.commit()
     flash("Registration successful. Please log in.", "success")
-    return redirect(url_for("auth.login_get"))
+    return redirect(url_for("auth.login"))
 
-@bp.post("/logout")
+# --- LOGOUT ---
+@bp.post("/logout", endpoint="logout")
 @login_required
 def logout_post():
     logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for("auth.login"))
