@@ -15,6 +15,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py ./app.py
 COPY templates ./templates
 COPY static ./static
+COPY auth.py ./auth.py
+COPY models.py ./models.py
 
 EXPOSE 5000
 USER appuser
