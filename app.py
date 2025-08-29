@@ -7,13 +7,13 @@ from models import db, User
 from auth import bp as auth_bp
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-print("ENV VARS:", os.environ)
-
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "dev-secret")  # set securely in prod
 
 # Database config
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+with open("/etc/secrets/db/DATABASE_URL") as f:
+    app.config["SQLALCHEMY_DATABASE_URI"] = f.read().strip()
+
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
