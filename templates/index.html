@@ -1,33 +1,25 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Cats Gazing 🐱</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="/static/styles.css" rel="stylesheet">
-</head>
-<body>
-  <main class="container">
-    <h1>Cats Gazing 🐱</h1>
-    <p class="subtitle">A tiny CI/CD demo app</p>
+{% extends "base.html" %}
+{% block title %}Cats Gazing 🐱{% endblock %}
 
-    <div id="image-wrap" class="image-wrap">
-      <img id="cat-img" alt="Random cat" />
-    </div>
+{% block content %}
+  <h1>Cats Gazing 🐱</h1>
+  <p class="subtitle">A tiny CI/CD demo app</p>
 
-    <div class="controls">
-      <button id="btn-new">New cat</button>
-      <label class="auto">
-        <input type="checkbox" id="auto-refresh">
-        Auto-refresh (every 10s)
-      </label>
-    </div>
+  <div id="image-wrap" class="image-wrap">
+    <img id="cat-img" alt="Random cat" />
+  </div>
 
-    <footer>
-      <span id="status">Loading…</span>
-    </footer>
-  </main>
+  <div class="controls">
+    <button id="btn-new">New cat</button>
+    <label class="auto">
+      <input type="checkbox" id="auto-refresh">
+      Auto-refresh (every 10s)
+    </label>
+  </div>
+
+  <footer>
+    <span id="status">Loading…</span>
+  </footer>
 
   <script src="/static/app.js"></script>
-</body>
-</html>
+{% endblock %}
