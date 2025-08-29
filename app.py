@@ -12,7 +12,7 @@ app.secret_key = os.getenv("SECRET_KEY", "dev-secret")  # set securely in prod
 
 # Database config
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-    "DATABASE_URL", "postgresql://user:password@postgres:5432/mydb"
+    "DATABASE_URL", "postgresql://user:password@cats-gazing-postgres:5432/mydb"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
