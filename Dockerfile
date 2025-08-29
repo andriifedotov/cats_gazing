@@ -19,7 +19,7 @@ COPY auth.py ./auth.py
 COPY models.py ./models.py
 
 EXPOSE 5000
-# USER appuser
+USER appuser
 
 # Gunicorn for production-ish serving
 CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app", "--access-logfile", "-"]
